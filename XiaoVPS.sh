@@ -329,11 +329,12 @@ function initMyVPS() {
 
     echo "========================================================================e"
     echo "添加数据库远程访问"
+    echo "    use mysql;"
+    echo "    select host,user,password from user;"
+    echo "    grant all privileges  on *.* to root@'%' identified by "root";"
     echo "========================================================================"
     mysql -u root -p
     use mysql;
-    grant all privileges  on *.* to root@'%' identified by "root";
-    select host,user,password from user;
     vim /etc/mysql/my.conf
     /etc/init.d/mysql restart
     /etc/init.d/php5-fpm restart
