@@ -302,29 +302,44 @@ function start_ss()
 }
 
 function initMyVPS() {
-    cd /root/
-    echo "========================================================================e"
-    echo "安装Shadowsock"
-    echo "========================================================================"
-    wget --no-check-certificate https://raw.githubusercontent.com/tennfy/shadowsocks-libev/master/debian_shadowsocks_tennfy.sh
-    chmod a+x debian_shadowsocks_tennfy.sh
-    bash debian_shadowsocks_tennfy.sh
-    /etc/init.d/shadowsocks-libev stop
-    /etc/init.d/shadowsocks-libev start
 
     cd /root/
     echo "========================================================================e"
-    echo "安装Lnmp环境"
+    echo "安装PPTP"
     echo "========================================================================"
-    wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_lnmp_tennfy/master/debian_lnmp_tennfy.sh
-    chmod a+x debian_lnmp_tennfy.sh
-    bash debian_lnmp_tennfy.sh init
-    bash debian_lnmp_tennfy.sh install
-    bash debian_lnmp_tennfy.sh addvhost
+    cat /dev/net/tun
+    cat /dev/ppp
+
+    wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_pptp_tennfy/master/debian_pptp_tennfy.sh
+    chmod a+x debian_pptp_tennfy.sh
+
+    ./debian_pptp_tennfy.sh install
+    ./debian_pptp_tennfy.sh adduser
+
+    cd /root/MyVPSConfig/
+    cp auth-up /etc/ppp/
+    chmod a+x /etc/ppp/auth-up
+    service pptpd restart
+
+
+    echo "========================================================================e"
+    echo "修改root密码"
+    echo "========================================================================"
+    passwd root
+
+    echo "========================================================================e"
+    echo "添加数据库远程访问"
+    echo "========================================================================"
+    mysql -u root -p
+    use mysql;
+    select host,user,password from user;
+    grant all privileges  on *.* to root@'%' identified by "root";
+    select host,user,password from user;
+    vim /etc/mysql/my.conf
     /etc/init.d/mysql restart
     /etc/init.d/php5-fpm restart
     /etc/init.d/nginx restart
-
+    netstat -an |grep 3306
 
 
 }
