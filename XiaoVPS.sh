@@ -302,6 +302,33 @@ function start_ss()
 }
 
 function initMyVPS() {
+    cd /root/
+    echo "========================================================================e"
+    echo "安装Shadowsock"
+    echo "========================================================================"
+    wget --no-check-certificate https://raw.githubusercontent.com/tennfy/shadowsocks-libev/master/debian_shadowsocks_tennfy.sh
+    chmod a+x debian_shadowsocks_tennfy.sh
+    bash debian_shadowsocks_tennfy.sh
+    /etc/init.d/shadowsocks-libev stop
+    /etc/init.d/shadowsocks-libev start
+
+    cd /root/
+    echo "========================================================================e"
+    echo "安装Lnmp环境"
+    echo "========================================================================"
+    wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_lnmp_tennfy/master/debian_lnmp_tennfy.sh
+    chmod a+x debian_lnmp_tennfy.sh
+    bash debian_lnmp_tennfy.sh init
+    bash debian_lnmp_tennfy.sh install
+    bash debian_lnmp_tennfy.sh addvhost
+
+
+    cd /root/
+    echo "========================================================================e"
+    echo "安装Wordpress"
+    echo "========================================================================"
+    wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_wordpress_tennfy.sh/master/debian_wordpress_tennfy.sh
+    bash debian_wordpress_tennfy.sh
 
     cd /root/
     echo "========================================================================e"
@@ -327,19 +354,9 @@ function initMyVPS() {
     echo "========================================================================"
     passwd root
 
-    echo "========================================================================e"
-    echo "添加数据库远程访问"
-    echo "    use mysql;"
-    echo "    select host,user,password from user;"
-    echo "    grant all privileges  on *.* to root@'%' identified by "root";"
-    echo "========================================================================"
-    mysql -u root -p
-    use mysql;
-    vim /etc/mysql/my.conf
     /etc/init.d/mysql restart
     /etc/init.d/php5-fpm restart
     /etc/init.d/nginx restart
-    netstat -an |grep 3306
 
 
 }
