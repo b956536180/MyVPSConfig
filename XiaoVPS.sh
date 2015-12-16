@@ -332,7 +332,6 @@ function initMyVPS() {
     echo "========================================================================"
     mysql -u root -p
     use mysql;
-    select host,user,password from user;
     grant all privileges  on *.* to root@'%' identified by "root";
     select host,user,password from user;
     vim /etc/mysql/my.conf
