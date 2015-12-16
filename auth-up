@@ -1,0 +1,13 @@
+#!/bin/sh
+# get the username/ppp line number from the parameters
+REALDEVICE=$1
+USER=$2
+# create the directory to keep pid files per user
+mkdir -p /var/run/pptpd-users
+# if there is a session already for this user, terminate the old one
+if [ -f /var/run/pptpd-users/$USER ]; then
+  kill -HUP `cat /var/run/pptpd-users/$USER`
+  rm /var/run/pptpd-users/$USER
+fi
+# copy the pid file of current user to /var/run/pptpd-users
+cp "/var/run/$REALDEVICE.pid" /var/run/pptpd-users/$USER
