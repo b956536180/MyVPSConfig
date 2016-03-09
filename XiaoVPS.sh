@@ -301,6 +301,21 @@ function start_ss()
 	echo "========================================================================"
 }
 
+function initNode(){
+	cd /root	
+	wget http://soft.91yun.org/soft/serverspeeder/serverspeeder-all.sh && bash serverspeeder-all.sh
+	apt-get update
+	apt-get upgrade
+	apt-get install python-pip git python-m2crypto vim
+	pip install cymysql
+	git clone -b manyuser https://github.com/mengskysama/shadowsocks.git
+	cd /root/shadowsocks/shadowsocks
+	echo  "vim Config.py\n"
+	echo  "vim config.json  aes-256-cfb  \n"
+	echo  "nohup python server.py > /var/log/shadowsocks.log 2>&1 &  \n"
+	
+	
+}
 function initMyVPS() {
     cd /root/
     echo "========================================================================e"
