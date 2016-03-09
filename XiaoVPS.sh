@@ -314,6 +314,8 @@ function initNode(){
 	echo  "vim config.json  aes-256-cfb  \n"
 	echo  "nohup python server.py > /var/log/shadowsocks.log 2>&1 &  \n"
 	
+	echo "cd /root/shadowsocks/shadowsocks;python server.py > /dev/null 2>&1 &" >> /etc/rc.local
+	echo "\n /serverspeeder/bin/serverSpeeder.sh start" >> /etc/rc.local
 	
 }
 function initMyVPS() {
@@ -380,13 +382,8 @@ function initMyVPS() {
 # main
 #
 #judge whether root or not
-if [ "$UID" -eq 0 ];then
-read -p "(Please input New MySQL root password):" ROOT_PASSWD
-if [ "$ROOT_PASSWD" = "" ]; then
-echo "Error: Password can't be NULL!!"
-exit 1
 fi
-    initMyVPS
+    initNode
 #install_soft_for_each
 #	setup_manyuser_ss
 #	setup_sspanel
